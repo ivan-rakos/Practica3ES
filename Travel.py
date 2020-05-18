@@ -1,23 +1,27 @@
 import User
 import Flights as f
+import Bank as b
+import Skyscanner as s
 
 
 class Travel:
-    def __init__(self,vuelo=[],dest=[],viajeros=1,precio=0):
+    def __init__(self,vuelo=[],dest=[],viajeros=1):
         self.vuelos = vuelo
         self.destinos = dest
         self.viajeros=viajeros
-        self.precio=precio
+        self.precio=0
+        self.pagado=False
+        self.reservas = False
         self.updatePrecio()
 
-    def addViajero(self):
-        self.viajeros += 1
+    def addViajero(self, num):
+        self.viajeros += num
         for i in self.vuelos:
             i.num_viajeros = self.viajeros
         self.updatePrecio()
 
-    def delViajero(self):
-        self.viajeros += -1
+    def delViajero(self, num):
+        self.viajeros += -num
         for i in self.vuelos:
             i.num_viajeros=self.viajeros
         self.updatePrecio()
@@ -45,4 +49,17 @@ class Travel:
             precio += (i.precio * self.viajeros)
         self.precio=precio
 
+    def payTravel(self,bank):
+        self.pagado=  bank.do_payment(bank.user, bank.pago)
+        self.confirmacionPago()
 
+    def confirmacionPago(self):
+        if(self.pagado==True): print("El pago se ha realizado correctamente")
+
+    def realizarReservas(self,user):
+        sky = s.Skyscanner()
+        self.reservas = sky.confirm_reserve(user,self.vuelos)
+
+    def getVuelos(self):
+        for i in self.vuelos:
+            print("Vuelo con codigo: "+str(i.codigo)+", con destino: "+i.destino+", con "+str(i.num_viajeros)+" viajeros")
