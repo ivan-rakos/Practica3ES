@@ -19,14 +19,16 @@ class MyTestCase(unittest.TestCase):
         self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',150]
         self.viajeros = [1,2,3,4,5]
         self.destinos = ['Berlin','Madrid','Roma','Paris','London']
-        self.testNumViajeros = [2,3,4,5]
+        self.testNumViajeros = [2,3,4,5,6]
         self.testEliminarViajero = [0,1,2,3,4]
 
     def test_numViajeros(self):
         resultado =[]
         for i in range(5):
-            viaje = t.Travel(None,None,self.viajeros[i])
-            if(viaje.viajeros>1):resultado.append(viaje.viajeros)
+            viaje = t.Travel([],[],2)
+            if(viaje.viajeros>1):
+                viaje.addViajero(i)
+                resultado.append(viaje.viajeros)
         self.assertEqual(resultado,self.testNumViajeros)
 
     def test_noDestinos(self):
@@ -55,14 +57,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(res,data)
 
     def test_addDestinoPrecio(self):
-        res = len(self.destinos)*29
+        res = len(self.destinos)*30
         viaje = t.Travel()
         for i in self.destinos:
             viaje.addDestino(i)
         self.assertEqual(res,viaje.precio)
 
     def test_addDestinoPrecioViajeros(self):
-        res = 2*len(self.destinos)*29
+        res = 2*len(self.destinos)*30
         viaje =t.Travel()
         viaje.addViajero(1)
         for i in self.destinos:
@@ -83,7 +85,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_MultipleDestinosViajerosVuelos(self):
         viaje = t.Travel()
-        viaje.addViajero()
+        viaje.addViajero(1)
         for i in self.destinos:
             viaje.addDestino(i)
         viaje.delDestino("Madrid")

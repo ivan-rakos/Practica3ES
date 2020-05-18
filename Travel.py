@@ -59,6 +59,10 @@ class Travel:
     def realizarReservas(self,user):
         sky = s.Skyscanner()
         self.reservas = sky.confirm_reserve(user,self.vuelos)
+        self.confirmacionReservas()
+
+    def confirmacionReservas(self):
+        if(self.reservas==True):print("Las reservas se han realizado correctamente")
 
     def getVuelos(self):
         for i in self.vuelos:
