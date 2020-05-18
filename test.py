@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
             ['David','Duran','654378018','M','Española'],
             ['Xavi','Lopez','654378017','M','Mexicana'],
             ['Charly','Garay','654378016','M','Paraguaya'],
-            ['Bernat','Mallol','654381965','China'],
+            ['Bernat','Mallol','654381965','M','China'],
             ['Ivan','Jimenez','652728162','M','Argentina']
         ]
         self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',150]
