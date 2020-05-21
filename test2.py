@@ -57,5 +57,24 @@ class MyTestCase(unittest.TestCase):
             print("No se ha podido realizar el pago")
 
 
+
+# Dado un viaje con múltiples destinos y más de un viajero, cuando se produce
+# error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
+    def test_MultiplesDestinosErrorConfirmVuelo(self):
+        viaje = t.Travel()
+        destinos1 = ['Berlin', 'Madrid', 'Roma']
+        destinos2 = ['Barcelona', 'Berlin', 'Amsterdam']
+        for i in range(2):
+            viaje.addViajero(i)
+        for i in self.destinos:
+            viaje.addDestino(i)
+
+        nombre, apellido, telf, sex, nac = self.users[0]
+        tipo, titular, num, cod, imp = self.datos_pago
+        user = u.User(1, nombre, apellido, telf, sex, nac)
+        pago = p.PaymentData(tipo, titular, num, cod, imp)
+
+        viaje.confirmacionVuelos(destinos2)
+
 if __name__ == '__main__':
     unittest.main()

@@ -67,6 +67,16 @@ class Travel:
     def confirmacionReservas(self):
         if(self.reservas==True):print("Las reservas se han realizado correctamente")
 
+
+    def confirmacionVuelos(self,vuelo):
+        destinosPosibles=[]
+        for i in self.vuelos:
+            destinosPosibles.append(i.destino)
+
+        for i in vuelo:
+            if i not in destinosPosibles:
+                print("Ha habido algun error al confirmar el vuelo")
+                break
     def getVuelos(self):
         for i in self.vuelos:
             print("Vuelo con codigo: "+str(i.codigo)+", con destino: "+i.destino+", con "+str(i.num_viajeros)+" viajeros")
