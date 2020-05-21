@@ -33,8 +33,28 @@ class MyTestCase(unittest.TestCase):
         user = u.User(1, nombre, apellido, telf, sex, nac)
         pago = p.PaymentData(tipo, titular, num, cod, imp)
         viaje.payTravel(b.Bank(user, pago))
-        if(pago.tipo_pago=="Visa"):
+        if(pago.tipo_pago=="Visa" or pago.tipo_pago=="MasterCard"):
             print("El metodo de pago es el correcto:",pago.tipo_pago)
+
+    """Dado un viaje con múltiples destinos y más de un viajero, cuando se produce un
+        error al realizar el pago, se reporta que la acción no se ha podido realizar
+        """
+    def test_MultiplesDestinosErrorPago(self):
+        viaje = t.Travel()
+
+        for i in range(2):
+            viaje.addViajero(i)
+        for i in self.destinos:
+            viaje.addDestino(i)
+
+        nombre, apellido, telf, sex, nac = self.users[0]
+        tipo, titular, num, cod, imp = self.datos_pago
+        user = u.User(1, nombre, apellido, telf, sex, nac)
+        pago = p.PaymentData(tipo, titular, num, cod, imp)
+        banco = b.Bank(user,pago)
+
+        if(banco.do_payment(user,pago.importe,cod,viaje.destinos,viaje.viajeros)!=True):
+            print("No se ha podido realizar el pago")
 
 
 if __name__ == '__main__':
