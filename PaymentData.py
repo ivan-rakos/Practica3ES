@@ -7,3 +7,4 @@ class PaymentData:
         self.cod_seguridad = cod
         self.importe = imp
         pass
+

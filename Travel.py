@@ -2,7 +2,7 @@ import User
 import Flights as f
 import Bank as b
 import Skyscanner as s
-
+import PaymentData as p
 
 class Travel:
     def __init__(self,vuelo=[],dest=[],viajeros=1):
@@ -53,8 +53,11 @@ class Travel:
         self.pagado=  bank.do_payment(bank.user, bank.pago)
         self.confirmacionPago()
 
+
+
     def confirmacionPago(self):
-        if(self.pagado==True): print("El pago se ha realizado correctamente")
+        if(self.pagado==True):
+            print("El pago se ha realizado correctamente")
 
     def realizarReservas(self,user):
         sky = s.Skyscanner()
