@@ -2,7 +2,7 @@
 
   # Integrantes
 
-  user: BernatMallol   name: Bernat Mallol Gorchs
+  user: BernatMallol - name: Bernat Mallol Gorchs
 
   user: Arkanen - name: Xavier López Lara
 
