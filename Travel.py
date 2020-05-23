@@ -57,10 +57,8 @@ class Travel:
         self.precio=precio
 
     def payTravel(self,bank):
-        self.pagado = bank.do_payment(bank.user, bank.pago)
+        self.pagado=  bank.do_payment(bank.user, bank.pago)
         self.confirmacionPago()
-
-
 
     def confirmacionPago(self):
         if(self.pagado==True):

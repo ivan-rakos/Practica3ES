@@ -8,6 +8,3 @@ class Hotels:
         self.durada_reserva = durada_reserva
         self.precio_dia = precio_dia
 
-    def confirm_reserve(self,user,lista_hoteles):
-        #CODIGO
-        pass
