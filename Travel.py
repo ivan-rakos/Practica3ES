@@ -106,15 +106,24 @@ class Travel:
     def confirmCars(self, user):
         rent = r.Rentalcars()
         if len(self.cars) > 0:
-            print("Vehiculos reservados correctamente") if rent.confirm_reserve(user, self.cars) else print(
-                "Error en la reserva de vehiculos")
+            if rent.confirm_reserve(user, self.cars):
+                print("Vehiculos reservados correctamente")
+                return True
+            else:
+                 print("Error en la reserva de vehiculos")
         else:
             print("No hay vehiculos a reservar")
+        return False
 
     def confirmHotels(self, user):
         book = b.Booking()
         if len(self.hoteles) > 0:
-            print("Alojamientos reservados correctamente") if book.confirm_reserve(user, self.cars) else print(
-                "Error en la reserva de alojamientos")
+            if book.confirm_reserve(user, self.hoteles):
+                print("Alojamientos reservados correctamente")
+                return True
+            else:
+                 print("Error en la reserva de Alojamientos")
         else:
-            print("No hay alojamientos a reservar")
+            print("No hay Alojamientos a reservar")
+        return False
+
