@@ -20,15 +20,14 @@ class Travel:
         self.reservas = False
         self.updatePrecio()
 
-
-    def addViajero(self):
-        self.viajeros += 1
+    def addViajero(self, num):
+        self.viajeros += num
         for i in self.vuelos:
             i.num_viajeros = self.viajeros
         self.updatePrecio()
 
-    def delViajero(self):
-        self.viajeros += -1
+    def delViajero(self, num):
+        self.viajeros += -num
         for i in self.vuelos:
             i.num_viajeros=self.viajeros
         self.updatePrecio()
@@ -58,12 +57,15 @@ class Travel:
         self.precio=precio
 
     def payTravel(self,bank):
-        self.pagado=  bank.do_payment(bank.user, bank.pago)
+        if(bank.comprobar_saldo(self.precio)):
+            self.pagado=  bank.do_payment(bank.user, bank.pago)
         self.confirmacionPago()
 
     def confirmacionPago(self):
         if(self.pagado==True):
             print("El pago se ha realizado correctamente")
+        else:
+            print("El pago no se ha realizado correctamente, revise los datos de pago")
 
     def realizarReservas(self,user):
         sky = s.Skyscanner()
@@ -71,7 +73,10 @@ class Travel:
         self.confirmacionReservas()
 
     def confirmacionReservas(self):
-        if(self.reservas==True):print("Las reservas se han realizado correctamente")
+        if(self.reservas==True):
+            print("Las reservas se han realizado correctamente")
+        else:
+            print("La reserva no se ha realizado correctamente, revise los datos")
 
     def getVuelos(self):
         for i in self.vuelos:
@@ -108,4 +113,3 @@ class Travel:
                 "Error en la reserva de alojamientos")
         else:
             print("No hay alojamientos a reservar")
-
