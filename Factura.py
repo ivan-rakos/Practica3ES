@@ -33,7 +33,3 @@ class Factura:
         else:
             print(error+" no tiene un formato correcto")
         return datos_OK
-
-
-    def Cambia_estado(self):
-        self.estado = not self.estado
