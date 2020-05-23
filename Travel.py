@@ -1,8 +1,7 @@
-import User
+
 import Flights as f
-import Bank as b
 import Skyscanner as s
-import PaymentData as p
+
 
 class Travel:
     def __init__(self,vuelo=[],dest=[],viajeros=1):
@@ -50,14 +49,15 @@ class Travel:
         self.precio=precio
 
     def payTravel(self,bank):
-        self.pagado=  bank.do_payment(bank.user, bank.pago)
+        if(bank.comprobar_saldo(self.precio)):
+            self.pagado=  bank.do_payment(bank.user, bank.pago)
         self.confirmacionPago()
-
-
 
     def confirmacionPago(self):
         if(self.pagado==True):
             print("El pago se ha realizado correctamente")
+        else:
+            print("El pago no se ha realizado correctamente, compruebe sus datos de pago")
 
     def realizarReservas(self,user):
         sky = s.Skyscanner()
@@ -65,18 +65,12 @@ class Travel:
         self.confirmacionReservas()
 
     def confirmacionReservas(self):
-        if(self.reservas==True):print("Las reservas se han realizado correctamente")
+        if(self.reservas==True):
+            print("Las reservas se han realizado correctamente")
+        else:
+            print("Las reservas no se han realizado correctamente")
 
 
-    def confirmacionVuelos(self,vuelo):
-        destinosPosibles=[]
-        for i in self.vuelos:
-            destinosPosibles.append(i.destino)
-
-        for i in vuelo:
-            if i not in destinosPosibles:
-                print("Ha habido algun error al confirmar el vuelo")
-                break
     def getVuelos(self):
         for i in self.vuelos:
             print("Vuelo con codigo: "+str(i.codigo)+", con destino: "+i.destino+", con "+str(i.num_viajeros)+" viajeros")

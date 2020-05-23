@@ -4,7 +4,6 @@ import Travel as t
 import Flights as f
 import PaymentData as p
 import Bank as b
-import Skyscanner as s
 
 class MyTestCase(unittest.TestCase):
 

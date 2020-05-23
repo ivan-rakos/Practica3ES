@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
             ['Ivan','Jimenez','652728162','M','Argentina']
         ]
         self.metodo_pago=['Visa','MasterCard']
-        self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',150]
+        self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',50]
         self.viajeros = [1,2,3,4,5]
         self.destinos = ['Berlin','Madrid','Roma','Paris','London']
         self.testNumViajeros = [2,3,4,5,6]
@@ -53,8 +53,9 @@ class MyTestCase(unittest.TestCase):
         pago = p.PaymentData(tipo, titular, num, cod, imp)
         banco = b.Bank(user,pago)
 
-        if(banco.do_payment(user,pago.importe,cod,viaje.destinos,viaje.viajeros)!=True):
+        if(viaje.payTravel(banco)!=True):
             print("No se ha podido realizar el pago")
+
 
 
 
@@ -62,19 +63,14 @@ class MyTestCase(unittest.TestCase):
 # error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
     def test_MultiplesDestinosErrorConfirmVuelo(self):
         viaje = t.Travel()
-        destinos1 = ['Berlin', 'Madrid', 'Roma']
-        destinos2 = ['Barcelona', 'Berlin', 'Amsterdam']
         for i in range(2):
             viaje.addViajero(i)
         for i in self.destinos:
             viaje.addDestino(i)
 
         nombre, apellido, telf, sex, nac = self.users[0]
-        tipo, titular, num, cod, imp = self.datos_pago
         user = u.User(1, nombre, apellido, telf, sex, nac)
-        pago = p.PaymentData(tipo, titular, num, cod, imp)
-
-        viaje.confirmacionVuelos(destinos2)
+        viaje.realizarReservas(user)
 
 if __name__ == '__main__':
     unittest.main()
