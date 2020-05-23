@@ -1,5 +1,5 @@
-from . import User
-from . import Hotels
+import User
+import Hotels
 
 
 class Booking():
