@@ -32,7 +32,9 @@ class MyTestCase(unittest.TestCase):
         pagament = b.Bank(nombre,datos)
         viaje.updatePrecio()
         if(len(viaje.destinos) > 1 and len(viaje.viajeros) > 1):
-            while(viaje.payTravel(pagament) != True):
+            viaje.payTravel(pagament)
+            while(viaje.pagado != True):
+                viaje.payTravel(pagament)
                 print("Error al realizar el pago, reintentado realizar el pago de nuevo")
 
     def test_reiintento_pago_confirmacion(self):
@@ -45,10 +47,15 @@ class MyTestCase(unittest.TestCase):
             viaje.addDestino(i)
         pagament = b.Bank(nombre,datos)
         viaje.updatePrecio()
-        if(len(viaje.destinos) > 1 and len(viaje.viajeros) > 1):
-            while(viaje.payTravel(pagament) != True):
+        if(len(viaje.destinos) > 1 and viaje.viajeros > 1):
+            viaje.payTravel(pagament)
+            while (viaje.pagado != True or pagament.comprobar_intentos() == False):
+                viaje.payTravel(pagament)
                 print("Error al realizar el pago, reintentado realizar el pago de nuevo")
-            print("Pago realizado con exito")
+                pagament.reintentos -= 1
+            if(pagament.reintentos > 3 and pagament.reintentos > 0):
+                total = 3-pagament.reintentos
+                print("Pago Realizado con exito tras" + total + "reintentos")
 
     def test_reiintento_pago_confirmacion(self):
         tipo,titular,num,cod,imp = self.datos_pago
@@ -61,7 +68,8 @@ class MyTestCase(unittest.TestCase):
         pagament = b.Bank(nombre,datos)
         viaje.updatePrecio()
         if(len(viaje.destinos) > 1 and len(viaje.viajeros) > 1):
-            while(viaje.payTravel(pagament) != True or pagament.comprobar_intentos() == False):
+            viaje.payTravel(pagament)
+            while(viaje.pagado != True or pagament.comprobar_intentos() == False):
                 print("Error al realizar el pago, reintentado realizar el pago de nuevo")
                 pagament.reintentos -= 1
             if(pagament.reintentos == 0):
