@@ -36,9 +36,10 @@ class MyTestCase(unittest.TestCase):
         if(pago.tipo_pago=="Visa" or pago.tipo_pago=="MasterCard"):
             print("El metodo de pago es el correcto:",pago.tipo_pago)
 
-    """Dado un viaje con múltiples destinos y más de un viajero, cuando se produce un
-        error al realizar el pago, se reporta que la acción no se ha podido realizar
-        """
+    """
+    Dado un viaje con múltiples destinos y más de un viajero, cuando se produce un
+    error al realizar el pago, se reporta que la acción no se ha podido realizar
+    """
     def test_MultiplesDestinosErrorPago(self):
         viaje = t.Travel()
         for i in range(2): viaje.addViajero(i)
@@ -55,8 +56,8 @@ class MyTestCase(unittest.TestCase):
 
 
 
-# Dado un viaje con múltiples destinos y más de un viajero, cuando se produce
-# error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando se produce
+    # error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
     def test_MultiplesDestinosErrorConfirmVuelo(self):
         viaje = t.Travel()
         for i in range(2): viaje.addViajero(i)

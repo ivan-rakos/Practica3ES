@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
         self.destinos = ['Berlin','Madrid','Roma','Paris','London']
         self.testNumViajeros = [2,3,4,5,6]
         self.testEliminarViajero = [0,1,2,3,4]
-
+    # Dado un viaje con más de un viajero, el número de viajeros es el esperado
     def test_numViajeros(self):
         resultado =[]
         for i in range(5):
@@ -29,24 +29,26 @@ class MyTestCase(unittest.TestCase):
                 viaje.addViajero(i)
                 resultado.append(viaje.viajeros)
         self.assertEqual(resultado,self.testNumViajeros)
-
+    # Dado un viaje sin destinos, la lista de destinos está vacía
     def test_noDestinos(self):
         viaje = t.Travel()
         self.assertEqual([],viaje.destinos)
-
+    # Dado un viaje sin destinos, la lista de vuelos está vacía
     def test_noDestinosNoVuelos(self):
         viaje = t.Travel()
         self.assertEqual([],viaje.vuelos)
-
+    # Dado un viaje sin destinos, el precio del viaje es cero
     def test_noDestinosNoPrecio(self):
         viaje = t.Travel()
         self.assertEqual(0,viaje.precio)
-
+    # Dado un viaje, cuando se añaden destinos, la lista de destinos es la esperada
     def test_addDestino(self):
         res =["Ibiza"]
         viaje = t.Travel()
         viaje.addDestino("Ibiza")
         self.assertEqual(res,viaje.destinos)
+
+    # Dado un viaje, cuando se añaden destinos, la lista de vuelos es la esperada
 
     def test_addDestinoVuelo(self):
         res =[1,"Ibiza"]
@@ -54,6 +56,7 @@ class MyTestCase(unittest.TestCase):
         viaje.addDestino("Ibiza")
         data =[len(viaje.vuelos),viaje.vuelos[0].destino]
         self.assertEqual(res,data)
+    # Dado un viaje, cuando se añaden destinos, el precio del viaje es el esperado
 
     def test_addDestinoPrecio(self):
         res = len(self.destinos)*30
@@ -61,6 +64,8 @@ class MyTestCase(unittest.TestCase):
         for i in self.destinos:
             viaje.addDestino(i)
         self.assertEqual(res,viaje.precio)
+    # Dado un viaje con más de un viajero, cuando se añaden destinos, el precio del
+    # viaje es el esperado
 
     def test_addDestinoPrecioViajeros(self):
         res = 2*len(self.destinos)*30
@@ -69,6 +74,9 @@ class MyTestCase(unittest.TestCase):
         for i in self.destinos:
             viaje.addDestino(i)
         self.assertEqual(res,viaje.precio)
+
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan
+    # destinos, la lista de destinos es la esperada
 
     def test_MultipleDestinosViajeros(self):
         res = ["Berlin","Madrid"]
@@ -81,6 +89,8 @@ class MyTestCase(unittest.TestCase):
         viaje.delDestino("Roma")
         print(viaje.destinos)
         self.assertEqual(res,viaje.destinos)
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan
+    # destinos, la lista de vuelos es la esperada
 
     def test_MultipleDestinosViajerosVuelos(self):
         viaje = t.Travel()
@@ -90,6 +100,9 @@ class MyTestCase(unittest.TestCase):
         viaje.delDestino("Madrid")
         print(viaje.getVuelos())
 
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan
+    # destinos, el precio del viaje es el esperado
+
     def test_MultipleDestinosViajerosPrecio(self):
         viaje = t.Travel()
         viaje.addViajero(1)
@@ -97,6 +110,9 @@ class MyTestCase(unittest.TestCase):
             viaje.addDestino(i)
         viaje.delDestino("Madrid")
         print(viaje.precio)
+
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando el pago se
+    # realiza correctamente, se reporta que la acción se ha realizado correctamente
 
     def test_PagoViaje(self):
         viaje = t.Travel()
@@ -110,7 +126,9 @@ class MyTestCase(unittest.TestCase):
 
         viaje.payTravel(b.Bank(user,pago))
         print(viaje.pagado)
-
+    # Dado un viaje con múltiples destinos y más de un viajero, cuando se confirma
+    # correctamente la reserva de los vuelos, se reporta que la acción se ha realizado
+    # correctamente
     def test_ConfirmarReserva(self):
         viaje = t.Travel()
         viaje.addDestino("Roma")
@@ -122,7 +140,7 @@ class MyTestCase(unittest.TestCase):
         print(viaje.reservas)
 
 
-
+    #Eliminar un viajero
     def test_eliminarViajero(self):
         resultado = []
         for i in range(5):

@@ -49,7 +49,7 @@ class MyTestCase(unittest.TestCase):
         user = u.User(2, nombre, apellido, telf, sex, nac)
         factura= fa.Factura(user,'12345678A','Calle Falsa 123','fake@gmail.com')
 
-        self.assertTrue(factura.comprobar_datos() == True)
+        self.assertTrue(factura.comprobar_datos()==False )
 
     '''
     Dado un viaje con múltiples destinos y más de un viajero, cuando se produce un
@@ -168,23 +168,6 @@ class MyTestCase(unittest.TestCase):
             print("\n Se ha superado el numero de intentos")
         self.assertTrue(confimacion == False and cont==5)
 
-    '''
-    def test_reintentar_confirmar_vehiculo_maxIntent(self):
-                travel = t.Travel()
-                travel.vuelos.append(f.Flights(111, "Ibiza", 2, 30))
-                travel.vuelos.append(f.Flights(222, "China", 2, 30))
-                travel.viajeros = 2
-                car = c.Cars("11111", "Mercedes", 3, 10, "Barcelona")
-                confimacion = travel.addCar(car)
-                cont = 0
-                while (not confimacion and):
-                    if cont == 0:
-                        travel.delCar(car)
-                        confimacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
-                    else:
-                        travel.addCar(car)
-                        confimacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
-                    cont += 1
-    '''
+
 if __name__ == '__main__':
     unittest.main()
