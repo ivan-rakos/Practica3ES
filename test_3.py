@@ -2,9 +2,6 @@ import unittest
 import User as u
 import Travel as t
 import Flights as f
-import PaymentData as p
-import Bank as b
-import Skyscanner as s
 import Hotels as h
 import Cars as c
 
@@ -13,6 +10,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_addCars(self):
         travel = t.Travel()
+        travel.vuelos = []
         travel.vuelos.append(f.Flights(111, "Ibiza", 2, 30))
         travel.viajeros = 2
         car = c.Cars("11111", "Mercedes", 3, 10, "Barcelona")
@@ -21,6 +19,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_delCars(self):
         travel = t.Travel()  # como puede ser que este ya tenga el vuelo creado?
+        travel.vuelos = []
+        travel.vuelos.append(f.Flights(111, "Ibiza", 2, 30))
         travel.viajeros = 2
         car = c.Cars("11111", "Mercedes", 3, 10, "Barcelona")
         travel.cars.append(car)
@@ -29,12 +29,16 @@ class MyTestCase(unittest.TestCase):
 
     def test_addHotel(self):
         travel = t.Travel()
+        travel.vuelos = []
+        travel.vuelos.append(f.Flights(111, "Ibiza", 2, 30))
         travel.viajeros = 2
         travel.addHotel(h.Hotels(111, "Hotel", 2, 34, 3, 30))
         self.assertTrue(travel.precio == 240)
 
     def test_delHotel(self):
         travel = t.Travel()
+        travel.vuelos = []
+        travel.vuelos.append(f.Flights(111, "Ibiza", 2, 30))
         travel.viajeros = 2
         hotel = h.Hotels(111, "Hotel", 2, 34, 3, 30)
         travel.addHotel(hotel)

@@ -60,8 +60,6 @@ class Travel:
         self.pagado=  bank.do_payment(bank.user, bank.pago)
         self.confirmacionPago()
 
-
-
     def confirmacionPago(self):
         if(self.pagado==True):
             print("El pago se ha realizado correctamente")

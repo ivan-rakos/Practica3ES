@@ -41,18 +41,14 @@ class MyTestCase(unittest.TestCase):
         """
     def test_MultiplesDestinosErrorPago(self):
         viaje = t.Travel()
-
-        for i in range(2):
-            viaje.addViajero(i)
-        for i in self.destinos:
-            viaje.addDestino(i)
+        for i in range(2): viaje.addViajero(i)
+        for i in self.destinos: viaje.addDestino(i)
 
         nombre, apellido, telf, sex, nac = self.users[0]
         tipo, titular, num, cod, imp = self.datos_pago
         user = u.User(1, nombre, apellido, telf, sex, nac)
         pago = p.PaymentData(tipo, titular, num, cod, imp)
         banco = b.Bank(user,pago)
-
         if(viaje.payTravel(banco)!=True):
             print("No se ha podido realizar el pago")
 
@@ -63,10 +59,8 @@ class MyTestCase(unittest.TestCase):
 # error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
     def test_MultiplesDestinosErrorConfirmVuelo(self):
         viaje = t.Travel()
-        for i in range(2):
-            viaje.addViajero(i)
-        for i in self.destinos:
-            viaje.addDestino(i)
+        for i in range(2): viaje.addViajero(i)
+        for i in self.destinos: viaje.addDestino(i)
 
         nombre, apellido, telf, sex, nac = self.users[0]
         user = u.User(1, nombre, apellido, telf, sex, nac)
