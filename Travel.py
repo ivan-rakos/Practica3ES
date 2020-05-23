@@ -1,8 +1,5 @@
-import User
 import Flights as f
 import Bank as b
-import Cars as c
-import Hotels as h
 import Skyscanner as s
 import Rentalcars as r
 import Booking as b
@@ -19,6 +16,7 @@ class Travel:
         self.pagado = False
         self.reservas = False
         self.updatePrecio()
+        self.reintentos_vuelo = 3
 
     def addViajero(self, num):
         self.viajeros += num
@@ -59,24 +57,31 @@ class Travel:
     def payTravel(self,bank):
         if(bank.comprobar_saldo(self.precio)):
             self.pagado=  bank.do_payment(bank.user, bank.pago)
-        self.confirmacionPago()
+        self.confirmacionPago(bank)
 
-    def confirmacionPago(self):
+    def confirmacionPago(self,bank):
         if(self.pagado==True):
             print("El pago se ha realizado correctamente")
         else:
             print("El pago no se ha realizado correctamente, revise los datos de pago")
+            while(bank.reintentos > 0):
+                bank.reintentos -= 1
+                self.payTravel(bank)
 
     def realizarReservas(self,user):
-        sky = s.Skyscanner()
-        self.reservas = sky.confirm_reserve(user,self.vuelos)
-        self.confirmacionReservas()
+        if(len(self.vuelos) > 0):
+            sky = s.Skyscanner()
+            self.reservas = sky.confirm_reserve(user,self.vuelos)
+        self.confirmacionReservas(user)
 
-    def confirmacionReservas(self):
+    def confirmacionReservas(self,user):
         if(self.reservas==True):
             print("Las reservas se han realizado correctamente")
         else:
             print("La reserva no se ha realizado correctamente, revise los datos")
+            while(self.reintentos_vuelo > 0):
+                self.reintentos_vuelo -= 1
+                self.realizarReservas(user)
 
     def getVuelos(self):
         for i in self.vuelos:

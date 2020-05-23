@@ -1,7 +1,7 @@
 class Flights:
 
-    def __init__(self,codi_vol,destinacio,numero_passatgers):
-        self.codi_vol = codi_vol
-        self.destinacio = destinacio
-        self.numero_passatgers = numero_passatgers
-    pass
+    def __init__(self, cod, destino, numero_viajeros, precio=30):
+        self.codigo = cod
+        self.destino = destino
+        self.num_viajeros = numero_viajeros
+        self.precio = precio

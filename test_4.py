@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
             ['Bernat','Mallol','654381965','M','China'],
             ['Ivan','Jimenez','652728162','M','Argentina']
         ]
-        self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',150]
+        self.datos_pago = ['Visa','David Durán','9999 8888 7777 6666','123',500]
         self.viajeros = [1,2,3,4,5]
         self.destinos = ['Berlin','Madrid','Roma','Paris','London']
         self.testNumViajeros = [2,3,4,5,6]
@@ -31,11 +31,7 @@ class MyTestCase(unittest.TestCase):
             viaje.addDestino(i)
         pagament = b.Bank(nombre,datos)
         viaje.updatePrecio()
-        if(len(viaje.destinos) > 1 and len(viaje.viajeros) > 1):
-            viaje.payTravel(pagament)
-            while(viaje.pagado != True):
-                viaje.payTravel(pagament)
-                print("Error al realizar el pago, reintentado realizar el pago de nuevo")
+        viaje.payTravel(pagament)
 
     def test_reiintento_pago_confirmacion(self):
         tipo,titular,num,cod,imp = self.datos_pago
@@ -47,33 +43,26 @@ class MyTestCase(unittest.TestCase):
             viaje.addDestino(i)
         pagament = b.Bank(nombre,datos)
         viaje.updatePrecio()
-        if(len(viaje.destinos) > 1 and viaje.viajeros > 1):
-            viaje.payTravel(pagament)
-            while (viaje.pagado != True or pagament.comprobar_intentos() == False):
-                viaje.payTravel(pagament)
-                print("Error al realizar el pago, reintentado realizar el pago de nuevo")
-                pagament.reintentos -= 1
-            if(pagament.reintentos > 3 and pagament.reintentos > 0):
-                total = 3-pagament.reintentos
-                print("Pago Realizado con exito tras" + total + "reintentos")
+        viaje.payTravel(pagament)
 
-    def test_reiintento_pago_confirmacion(self):
-        tipo,titular,num,cod,imp = self.datos_pago
-        datos = p.PaymentData(tipo,titular,num,cod,imp)
+
+    def test_reiintento_vuelo_confirmacion(self):
+        nombre, apellido, telf, sex, nac = self.users[0]
+        viaje = t.Travel()
+        viaje.addViajero(2)
+        user = u.User(1, nombre, apellido, telf, sex, nac)
+        viaje.updatePrecio()
+        viaje.realizarReservas(user)
+
+    def test_reiintento_vuelo_confirmacion_correcta(self):
         nombre, apellido, telf, sex, nac = self.users[0]
         viaje = t.Travel()
         viaje.addViajero(2)
         for i in self.destinos:
             viaje.addDestino(i)
-        pagament = b.Bank(nombre,datos)
+        user = u.User(1, nombre, apellido, telf, sex, nac)
         viaje.updatePrecio()
-        if(len(viaje.destinos) > 1 and len(viaje.viajeros) > 1):
-            viaje.payTravel(pagament)
-            while(viaje.pagado != True or pagament.comprobar_intentos() == False):
-                print("Error al realizar el pago, reintentado realizar el pago de nuevo")
-                pagament.reintentos -= 1
-            if(pagament.reintentos == 0):
-                print("Se ha superado el numero maximo de reiintentos de pago")
+        viaje.realizarReservas(user)
 
 if __name__ == '__main__':
     unittest.main()
