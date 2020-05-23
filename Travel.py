@@ -20,14 +20,15 @@ class Travel:
         self.reservas = False
         self.updatePrecio()
 
-    def addViajero(self, num):
-        self.viajeros += num
+
+    def addViajero(self):
+        self.viajeros += 1
         for i in self.vuelos:
             i.num_viajeros = self.viajeros
         self.updatePrecio()
 
-    def delViajero(self, num):
-        self.viajeros += -num
+    def delViajero(self):
+        self.viajeros += -1
         for i in self.vuelos:
             i.num_viajeros=self.viajeros
         self.updatePrecio()
@@ -72,17 +73,6 @@ class Travel:
     def confirmacionReservas(self):
         if(self.reservas==True):print("Las reservas se han realizado correctamente")
 
-
-    def confirmacionVuelos(self,vuelo):
-        destinosPosibles=[]
-        for i in self.vuelos:
-            destinosPosibles.append(i.destino)
-
-        for i in vuelo:
-            if i not in destinosPosibles:
-                print("Ha habido algun error al confirmar el vuelo")
-                break
-
     def getVuelos(self):
         for i in self.vuelos:
             print("Vuelo con codigo: "+str(i.codigo)+", con destino: "+i.destino+", con "+str(i.num_viajeros)+" viajeros")
@@ -118,3 +108,4 @@ class Travel:
                 "Error en la reserva de alojamientos")
         else:
             print("No hay alojamientos a reservar")
+

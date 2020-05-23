@@ -132,7 +132,5 @@ class MyTestCase(unittest.TestCase):
             resultado.append(viaje.viajeros)
         self.assertEqual(resultado,self.testEliminarViajero)
 
-
-
 if __name__ == '__main__':
     unittest.main()
