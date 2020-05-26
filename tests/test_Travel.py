@@ -1,8 +1,10 @@
 import unittest
-from src import Bank as b, PaymentData as p, Flights as f, Cars as c, Hotels as h, User as u, Travel as t
+from src import Travel as t
 from unittest import mock
+from data_test import DataSet as data
 
 class MyTestCase(unittest.TestCase):
+
     # Dado un viaje con más de un viajero, el número de viajeros es el esperado
     def test_numViajeros(self):
         numviajeros = 2
@@ -63,78 +65,65 @@ class MyTestCase(unittest.TestCase):
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan destinos, la lista de destinos es la esperada
     def test_MultipleDestinosViajeros(self):
+        datos = data.DataSet()
         res = ["Berlin", "Madrid"]
-        viaje = t.Travel()
-        viaje.addViajero(1)
-        viaje.addDestino("Berlin")
-        viaje.addDestino("Madrid")
-        viaje.addDestino("Roma")
+        viaje = datos.viaje
         viaje.delDestino("Roma")
         self.assertEqual(res, viaje.destinos)
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan destinos, la lista de vuelos es la esperada
     def test_MultipleDestinosViajerosVuelos(self):
-        numviajeros = 2
-        precio = 30
-        vuelos = [f.Flights(1, "Berlin", numviajeros, precio), f.Flights(2, "Madrid", numviajeros, precio),
-                  f.Flights(3, "Roma", numviajeros, precio)]
-        destinos = ["Berlin", "Madrid", "Roma"]
-        viaje = t.Travel(vuelos, destinos, numviajeros)
+        datos= data.DataSet()
+        viaje = datos.viaje
         viaje.delDestino("Roma")
-        self.assertEqual(vuelos, viaje.vuelos)
+        self.assertEqual(['Berlin','Madrid'], viaje.destinos)
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando se quitan destinos, el precio del viaje es el esperado
     def test_MultipleDestinosViajerosPrecio(self):
-        numviajeros = 2
-        precio = 30
-        vuelos = [f.Flights(1, "Berlin", numviajeros, precio), f.Flights(2, "Madrid", numviajeros, precio),
-                  f.Flights(3, "Roma", numviajeros, precio)]
-        destinos = ["Berlin", "Madrid", "Roma"]
-        viaje = t.Travel(vuelos, destinos, numviajeros)
+        datos = data.DataSet()
+        viaje = datos.viaje
         viaje.delDestino("Madrid")
         self.assertEqual(viaje.precio, 120)
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando el pago se realiza correctamente, se reporta que la acción se ha realizado correctamente
     def test_PagoViaje(self):
-        numviajeros = 2
-        precio = 30
-        vuelos = [f.Flights(1, "Berlin", numviajeros, precio), f.Flights(2, "Madrid", numviajeros, precio),
-                  f.Flights(3, "Roma", numviajeros, precio)]
-        destinos = ["Berlin", "Madrid", "Roma"]
-        viaje = t.Travel(vuelos, destinos, numviajeros)
-        user = u.User(1, "Ivan", "Jimenez", "652748056", "M", "Española")
-        pago = p.PaymentData("Visa", 'Iván Jiménez', "2000 1111 2222 3333", "123", 500)
-        viaje.payTravel(user, pago)
+        datos = data.DataSet()
+        viaje = datos.viaje
+        viaje.payTravel(datos.user, datos.pago)
         self.assertEqual(viaje.pagado, True)
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando se confirma correctamente la reserva de los vuelos, se reporta que la acción se ha realizado correctamente
     def test_ConfirmarReserva(self):
-        numviajeros = 2
-        precio = 30
-        vuelos = [f.Flights(1, "Berlin", numviajeros, precio), f.Flights(2, "Madrid", numviajeros, precio),
-                  f.Flights(3, "Roma", numviajeros, precio)]
-        destinos = ["Berlin", "Madrid", "Roma"]
-        viaje = t.Travel(vuelos, destinos, numviajeros)
-        user = u.User(1, "Ivan", "Jimenez", "652748056", "M", "Española")
-        viaje.realizarReservas(user)
-        self.assertEqual(viaje.reservas, True)
+        datos = data.DataSet()
+        viaje = datos.viaje
+        res = viaje.confirmacionVuelos(datos.user)
+        self.assertEqual(res, True)
 
 
     # Dado un viaje con múltiples destinos y más de un viajero, cuando se produce
     # error al confirmar los vuelos, se reporta que la acción no se ha podido realizar
     @mock.patch("src.Travel.s.Skyscanner")
     def test_MultiplesDestinosErrorConfirmVuelo(self,mock):
+        datos = data.DataSet()
         mock.confirm_reserve.return_value = False
-        numviajeros = 2
-        precio = 30
-        vuelos = [f.Flights(1, "Berlin", numviajeros, precio), f.Flights(2, "Madrid", numviajeros, precio),
-                  f.Flights(3, "Roma", numviajeros, precio)]
-        destinos = ["Berlin", "Madrid", "Roma"]
-        viaje = t.Travel(vuelos, destinos, numviajeros)
-        nombre, apellido, telf, sex, nac = ['David', 'Duran', '654378018', 'M', 'Española']
-        user = u.User(1, nombre, apellido, telf, sex, nac)
-        self.assertFalse(viaje.confirmacionVuelos(user))
+        viaje = datos.viaje
+        self.assertFalse(viaje.confirmacionVuelos(datos.user))
 
+    @mock.patch("src.Travel.s.Skyscanner")
+    def test_reintento_vuelo(self, mock2):
+        datos = data.DataSet()
+        mock2.confirm_reserve.return_value = False
+        viaje=datos.viaje
+        viaje.confirm_Vuelos_reintentos(datos.user)
+        self.assertLess(viaje.reintentos_vuelo, 3)
+
+    @mock.patch("src.Travel.s.Skyscanner")
+    def test_reintento_vuelo(self, mock):
+        datos = data.DataSet()
+        mock.confirm_reserve.side_effect = [False, True]
+        viaje=datos.viaje
+        viaje.confirm_Vuelos_reintentos(datos.user)
+        self.assertEqual(mock.confirm_reserve.call_count, 2)
 
 if __name__ == '__main__':
     unittest.main()

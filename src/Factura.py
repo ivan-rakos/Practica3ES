@@ -2,6 +2,7 @@ class Factura:
 
     def __init__(self, user,DNI, direc,email):
 
+        self.user = user
         self.nombre_completo = user.nombre +user.apellidos
         self.DNI = DNI
         self.direccio=direc
@@ -18,7 +19,8 @@ class Factura:
 
         numeros_dni= self.DNI[0:-1]
         caracter= self.DNI[-1:]
-        if not numeros_dni.isalnum() or not caracter.isalpha() or len(self.DNI)!=9:
+        a=numeros_dni.isdigit()
+        if not numeros_dni.isdigit() or not caracter.isalpha() or len(self.DNI)!=9:
             error += " DNI "
             datos_OK= False
         if not self.telefono.isalnum() or len(self.telefono)!=9:
@@ -33,3 +35,6 @@ class Factura:
         else:
             print(error+" no tiene un formato correcto")
         return datos_OK
+
+    def inf_factura_completa(self):
+        return False if self.user.nombre ==None or self.user.apellidos==None or self.DNI==None or self.direccio==None or self.telefono==None or self.email==None else True

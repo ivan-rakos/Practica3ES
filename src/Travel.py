@@ -60,7 +60,7 @@ class Travel:
         if self.pagado:
             print("Pago realizado correctamente")
         else:
-            print("Erro de pago")
+            print("Error de pago")
         return self.pagado
 
     def confirmacionPago(self,user, pago):
@@ -161,4 +161,16 @@ class Travel:
                 return True
         print("La acción no se ha podido realizar")
         return False
+
+    def confirm_Vuelos_reintentos(self, user):
+        while not self.confirmacionVuelos(user) and self.reintentos_vuelo > 0:
+            self.reintentos_vuelo -= 1
+            print("Reintentando...")
+
+        if self.reintentos_vuelo == 0:
+            print("Superado el número máximo de reintentos\n")
+            return False
+        else:
+            print("Vuelos reservados correctamente\n")
+            return True
 
