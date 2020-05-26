@@ -1,10 +1,6 @@
 import unittest
-import User as u
-import Travel as t
-import Flights as f
-import Factura as fa
-import Hotels as h
-import Cars as c
+from src import Flights as f, Cars as c, Hotels as h, Factura as fa, User as u, Travel as t
+
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
@@ -62,11 +58,12 @@ class MyTestCase(unittest.TestCase):
         travel.vuelos.append(f.Flights(222, "China", 2, 30))
         travel.viajeros = 2
 
-        confimacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
+        confirmacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
 
-        if not confimacion:
+        if not confirmacion:
             print("reintentando confirmación de veiculo")
-            confimacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
+            confirmacion = travel.confirmCars(u.User(1, 'David', 'Duran', 4545454, 'Hombre', 'Española'))
+        self.assertFalse(confirmacion)
     '''
     Dado un viaje con múltiples destinos y más de un viajero, cuando la
     confirmación de los vehículos se realiza correctamente en un reintento, se

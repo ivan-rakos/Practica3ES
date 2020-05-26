@@ -1,10 +1,6 @@
 import unittest
-import User as u
-import Travel as t
-import Flights as f
-import PaymentData as p
-import Bank as b
-import Skyscanner as s
+from src import Bank as b, PaymentData as p, User as u, Travel as t
+
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
