@@ -1,8 +1,5 @@
-import Flights as f
-import Bank as b
-import Skyscanner as s
-import Rentalcars as r
-import Booking as b
+from src import Bank as b, Booking as bo, Flights as f, Rentalcars as r, Skyscanner as s
+
 
 class Travel:
 
@@ -17,6 +14,9 @@ class Travel:
         self.reservas = False
         self.updatePrecio()
         self.reintentos_vuelo = 3
+        self.reintentos_vehiculo = 3
+        self.reintentos_hoteles = 3
+        self.reintentos_pago = 3
 
     def addViajero(self, num):
         self.viajeros += num
@@ -54,24 +54,29 @@ class Travel:
         for hotel in self.hoteles: precio += (hotel.precio_dia * hotel.numero_hostes * hotel.durada_reserva)
         self.precio=precio
 
-    def payTravel(self,bank):
-        if(bank.comprobar_saldo(self.precio)):
-            self.pagado=  bank.do_payment(bank.user, bank.pago)
-        self.confirmacionPago(bank)
-
-    def confirmacionPago(self,bank):
-        if(self.pagado==True):
-            print("El pago se ha realizado correctamente")
+    def payTravel(self,user, pago):
+        if pago.tipo_pago == 'VISA' or pago.tipo_pago == 'Mastercard':
+            self.pagado = b.Bank.do_payment(0,user, pago)
+        if self.pagado:
+            print("Pago realizado correctamente")
         else:
-            print("El pago no se ha realizado correctamente, revise los datos de pago")
-            while(bank.reintentos > 0):
-                bank.reintentos -= 1
-                self.payTravel(bank)
+            print("Erro de pago")
+        return self.pagado
+
+    def confirmacionPago(self,user, pago):
+        while not self.payTravel(user,pago) and self.reintentos_pago > 0:
+            self.reintentos_pago -= 1
+            print("Reintentando...")
+
+        if self.reintentos_pago == 0:
+            print("Superado el número máximo de reintentos\n")
+            return False
+        else:
+            return True
 
     def realizarReservas(self,user):
         if(len(self.vuelos) > 0):
-            sky = s.Skyscanner()
-            self.reservas = sky.confirm_reserve(user,self.vuelos)
+            self.reservas = s.Skyscanner.confirm_reserve(0,user,self.vuelos)
         self.confirmacionReservas(user)
 
     def confirmacionReservas(self,user):
@@ -82,6 +87,7 @@ class Travel:
             while(self.reintentos_vuelo > 0):
                 self.reintentos_vuelo -= 1
                 self.realizarReservas(user)
+
 
     def getVuelos(self):
         for i in self.vuelos:
@@ -104,17 +110,55 @@ class Travel:
         self.updatePrecio()
 
     def confirmCars(self, user):
-        rent = r.Rentalcars()
         if len(self.cars) > 0:
-            print("Vehiculos reservados correctamente") if rent.confirm_reserve(user, self.cars) else print(
-                "Error en la reserva de vehiculos")
+            if r.Rentalcars.confirm_reserve(0, user, self.cars):
+                print("Vehiculos reservados correctamente\n")
+                return True
+            print("Error en la reserva del vehiculo")
         else:
             print("No hay vehiculos a reservar")
+        return False
+
+    def confirm_cars_reintentos(self, user):
+        while not self.confirmCars(user) and self.reintentos_vehiculo > 0:
+            self.reintentos_vehiculo -=1
+            print("Reintentando...")
+
+        if self.reintentos_vehiculo == 0:
+            print("Superado el número máximo de reintentos\n")
+            return False
+        else:
+            print("Vehiculos reservados correctamente\n")
+            return True
 
     def confirmHotels(self, user):
-        book = b.Booking()
         if len(self.hoteles) > 0:
-            print("Alojamientos reservados correctamente") if book.confirm_reserve(user, self.cars) else print(
-                "Error en la reserva de alojamientos")
+            if bo.Booking.confirm_reserve(0, user, self.hoteles):
+                print("Alojamientos reservados correctamente\n")
+                return True
+            print("Error en la reserva")
         else:
-            print("No hay alojamientos a reservar")
+            print("No hay Alojamientos a reservar")
+        return False
+
+    def confirm_Hotels_reintentos(self, user):
+        while not self.confirmHotels(user) and self.reintentos_hoteles > 0:
+            self.reintentos_hoteles -=1
+            print("Reintentando...")
+
+        if self.reintentos_hoteles == 0:
+            print("Superado el número máximo de reintentos\n")
+            return False
+        else:
+            print("Vehiculos reservados correctamente\n")
+            return True
+
+    def confirmacionVuelos(self,user):
+        if (len(self.vuelos)>0):
+            sky = s.Skyscanner.confirm_reserve(0,user,self.vuelos)
+            if sky:
+                print("Reserva realizada correctamente")
+                return True
+        print("La acción no se ha podido realizar")
+        return False
+
